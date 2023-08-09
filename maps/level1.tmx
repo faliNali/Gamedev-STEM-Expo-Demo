@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="40" tileheight="40" infinite="0" nextlayerid="12" nextobjectid="61">
+ <editorsettings>
+  <export target="level1.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" name="Pastel" tilewidth="40" tileheight="40" tilecount="1" columns="1">
+  <image source="tileset1.png" width="40" height="40"/>
+  <wangsets>
+   <wangset name="weeee" type="corner" tile="7">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="10" wangid="0,1,0,0,0,1,0,1"/>
+    <wangtile tileid="11" wangid="0,1,0,1,0,0,0,1"/>
+    <wangtile tileid="17" wangid="0,0,0,1,0,1,0,1"/>
+    <wangtile tileid="18" wangid="0,1,0,1,0,1,0,0"/>
+    <wangtile tileid="22" wangid="0,0,0,1,0,0,0,0"/>
+    <wangtile tileid="23" wangid="0,0,0,1,0,1,0,0"/>
+    <wangtile tileid="24" wangid="0,0,0,0,0,1,0,0"/>
+    <wangtile tileid="29" wangid="0,1,0,1,0,0,0,0"/>
+    <wangtile tileid="30" wangid="0,1,0,1,0,1,0,1"/>
+    <wangtile tileid="31" wangid="0,0,0,0,0,1,0,1"/>
+    <wangtile tileid="36" wangid="0,1,0,0,0,0,0,0"/>
+    <wangtile tileid="37" wangid="0,1,0,0,0,0,0,1"/>
+    <wangtile tileid="38" wangid="0,0,0,0,0,0,0,1"/>
+   </wangset>
+   <wangset name="woooooo" type="edge" tile="11">
+    <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
+    <wangtile tileid="0" wangid="0,0,1,0,1,0,0,0"/>
+    <wangtile tileid="1" wangid="0,0,1,0,1,0,1,0"/>
+    <wangtile tileid="2" wangid="0,0,0,0,1,0,1,0"/>
+    <wangtile tileid="7" wangid="1,0,1,0,1,0,0,0"/>
+    <wangtile tileid="8" wangid="1,0,1,0,1,0,1,0"/>
+    <wangtile tileid="9" wangid="1,0,0,0,1,0,1,0"/>
+    <wangtile tileid="14" wangid="1,0,1,0,0,0,0,0"/>
+    <wangtile tileid="15" wangid="1,0,1,0,0,0,1,0"/>
+    <wangtile tileid="16" wangid="1,0,0,0,0,0,1,0"/>
+    <wangtile tileid="25" wangid="0,0,0,0,1,0,0,0"/>
+    <wangtile tileid="32" wangid="1,0,0,0,1,0,0,0"/>
+    <wangtile tileid="39" wangid="1,0,0,0,0,0,0,0"/>
+    <wangtile tileid="43" wangid="0,0,1,0,0,0,0,0"/>
+    <wangtile tileid="44" wangid="0,0,1,0,0,0,1,0"/>
+    <wangtile tileid="45" wangid="0,0,0,0,0,0,1,0"/>
+   </wangset>
+  </wangsets>
+ </tileset>
+ <objectgroup id="7" name="Player Start">
+  <object id="58" x="120" y="680">
+   <point/>
+  </object>
+ </objectgroup>
+ <layer id="11" name="Tiles" width="20" height="20">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,
+1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
+1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="6" name="Enemies">
+  <object id="53" x="440" y="640">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Platforms"/>
+ <objectgroup id="9" name="Flag">
+  <object id="60" x="40" y="240">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
