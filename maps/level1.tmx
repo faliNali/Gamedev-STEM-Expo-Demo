@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="40" tileheight="40" infinite="0" nextlayerid="12" nextobjectid="61">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="40" tileheight="40" infinite="0" nextlayerid="12" nextobjectid="61">
  <editorsettings>
   <export target="level1.lua" format="lua"/>
  </editorsettings>
- <tileset firstgid="1" name="Pastel" tilewidth="40" tileheight="40" tilecount="1" columns="1">
-  <image source="tileset1.png" width="40" height="40"/>
+ <tileset firstgid="1" name="Pastel" tilewidth="40" tileheight="40" tilecount="9" columns="3">
+  <image source="tileset1.png" width="120" height="120"/>
   <wangsets>
    <wangset name="weeee" type="corner" tile="7">
     <wangcolor name="" color="#ff0000" tile="-1" probability="1"/>
@@ -42,44 +42,28 @@
    </wangset>
   </wangsets>
  </tileset>
- <objectgroup id="7" name="Player Start">
-  <object id="58" x="120" y="680">
-   <point/>
-  </object>
- </objectgroup>
  <layer id="11" name="Tiles" width="20" height="20">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
-1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
 1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,
 1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,
 1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,
 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
-1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
-1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,1,1,
+1,1,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,1,1,1,
 1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
-1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+1,1,1,1,0,0,0,5,0,0,0,0,0,5,0,0,0,0,1,1,
 1,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,
 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
 1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
-1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,0,0,6,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="6" name="Enemies">
-  <object id="53" x="440" y="640">
-   <point/>
-  </object>
- </objectgroup>
- <objectgroup id="5" name="Platforms"/>
- <objectgroup id="9" name="Flag">
-  <object id="60" x="40" y="240">
-   <point/>
-  </object>
- </objectgroup>
 </map>
