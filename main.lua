@@ -69,23 +69,37 @@ function love.draw()
     player:draw()
 end
 
-Player = {}
-Player.__index = Player
+Object = {}
+
+function Object:new(id, x, y, w, h)
+    local obj = {}
+    setmetatable(obj, self)
+    self.__index = self
+
+    obj.id = id or 'object'
+    obj.position = {x=x or 0, y=y or 0}
+    obj.velocity = {x=0, y=0}
+    world:add(obj, obj.position.x, obj.position.y, w or tileSize, h or tileSize)
+
+    return obj
+end
+
+function Object:draw()
+    local x, y, w, h = world:getRect(self)
+    love.graphics.rectangle('fill', x, y, w, h)
+end
+
+Player = Object:new()
 
 function Player:new(x, y)
-    local p = {}
+    local p = Object:new('player', x, y, tileSize * 3/4, tileSize)
     setmetatable(p, self)
-
-    p.id = 'player'
+    self.__index = self
+    
     p.speed = 300
     p.gravity = 20
     p.jumpVelocity = -450
     p.justJumped = false
-
-    p.position = {x=x, y=y}
-    p.velocity = {x=0, y=0}
-
-    world:add(p, x, y, tileSize * 3/4, tileSize)
     
     return p
 end
@@ -125,14 +139,14 @@ function Player.filter(item, other)
     else return false end
 end
 
-function Player:checkRelativePositionCols(relativeX, relativeY)
+function Player:relativePositionCols(relativeX, relativeY)
     return world:check(
         self, self.position.x+relativeX, self.position.y+relativeY, Player.filter
     )
 end
 
-function Player:checkRelativePositionForID(relativeX, relativeY, id)
-    local actualX, actualY, cols = self:checkRelativePositionCols(relativeX, relativeY)
+function Player:relativePositionForID(relativeX, relativeY, id)
+    local actualX, actualY, cols = self:relativePositionCols(relativeX, relativeY)
 
     for i, col in ipairs(cols) do
         if col.other.id == id then return true end
@@ -141,11 +155,11 @@ function Player:checkRelativePositionForID(relativeX, relativeY, id)
 end
 
 function Player:isOnGround()
-    return self:checkRelativePositionForID(0, 1, 'ground')
+    return self:relativePositionForID(0, 1, 'ground')
 end
 
 function Player:isTouchingCeiling()
-    return self:checkRelativePositionForID(0, -1, 'ground')
+    return self:relativePositionForID(0, -1, 'ground')
 end
 
 function Player:keypressed(key)
