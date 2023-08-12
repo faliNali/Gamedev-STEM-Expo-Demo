@@ -21,7 +21,7 @@ function love.load()
     for i, tileData in ipairs(tileLayer.data) do
         local tileX = ((i-1) % tileLayer.width)*game.tileSize
         local tileY = math.floor((i-1) / tileLayer.width)*game.tileSize
-        
+
         if tileData == 1 or tileData == 2 then
             local tile = {}
             tile.id = tileData == 1 and 'ground' or tileData == 2 and 'water'

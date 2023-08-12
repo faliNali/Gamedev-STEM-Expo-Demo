@@ -8,8 +8,10 @@ function Player:new(x, y)
     setmetatable(p, self)
     self.__index = self
     
+    p.alive = true
     p.speed = 300
-    p.gravity = 20
+    p.gravity = 1200
+    p.useGravity = true
     p.jumpVelocity = -450
     p.justJumped = false
     
@@ -17,44 +19,67 @@ function Player:new(x, y)
 end
 
 function Player:update(dt)
-    print(self.velocity.y)
-    if love.keyboard.isDown('d') then
-        self.velocity.x = self.speed
-    elseif love.keyboard.isDown('a') then
-        self.velocity.x = -self.speed
-    else
-        self.velocity.x = 0
-    end
-
-    if self:isTouchingCeiling() then
-        self.velocity.y = self.gravity
-    elseif self:isOnGround() then
-        if self.justJumped then
-            self.justJumped = false
-        else
-            self.velocity.y = 0
+    local function gravityUpdate()
+        if self.useGravity then
+            self.velocity.y = self.velocity.y + self.gravity * dt * 0.5
         end
-    else
-        self.velocity.y = self.velocity.y + self.gravity
     end
 
+    gravityUpdate()
     local goalX = self.position.x + self.velocity.x * dt
     local goalY = self.position.y + self.velocity.y * dt
-    local actualX, actualY, cols = game.world:move(self, goalX, goalY, self.filter)
+    local actualX, actualY, cols = game.world:move(self, goalX, goalY,
+        self.alive and self.filter or function(item, other) return false end)
     
     self.position.x = actualX or self.position.x
     self.position.y = actualY or self.position.y
+    
+    self.useGravity = true
+    if self.alive then
+        if love.keyboard.isDown('d') then
+            self.velocity.x = self.speed
+        elseif love.keyboard.isDown('a') then
+            self.velocity.x = -self.speed
+        else
+            self.velocity.x = 0
+        end
 
-    for col in ipairs(cols) do
-        if col.other.id == 'water' then
+        if self:isTouchingCeiling() then
+            self.velocity.y = self.gravity * dt
+        elseif self:isOnGround() then
+            if self.justJumped then
+                self.justJumped = false
+            else
+                self.velocity.y = 0
+            end
+        end
 
+        for i, col in ipairs(cols) do
+            if col.other.id == 'water' then
+                self:die()
+            end
+        end
+    else
+        if self.velocity.y < 0 then
+            self.useGravity = true
+        else
+            self.useGravity = false
+            self.velocity.y = 0
         end
     end
+
+    gravityUpdate()
 end
 
 function Player.filter(item, other)
     if other.id == 'ground' then return 'slide'
-    else return false end
+    else return 'slide' end
+end
+
+function Player:die()
+    self.alive = false
+    self.velocity.x = 0
+    self.velocity.y = self.jumpVelocity
 end
 
 function Player:relativePositionCols(relativeX, relativeY)
@@ -81,7 +106,7 @@ function Player:isTouchingCeiling()
 end
 
 function Player:keypressed(key)
-    if (key == 'w' or key == 'space') and self:isOnGround() then
+    if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
         self.velocity.y = self.jumpVelocity
         self.justJumped = true
         print("yay")
