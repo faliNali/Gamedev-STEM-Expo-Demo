@@ -14,6 +14,7 @@ function Player:new(x, y)
     p.useGravity = true
     p.jumpVelocity = -450
     p.justJumped = false
+    p.wasTouchingGround = false
     
     return p
 end
@@ -34,7 +35,6 @@ function Player:update(dt)
     self.position.x = actualX or self.position.x
     self.position.y = actualY or self.position.y
     
-    self.useGravity = true
     if self.alive then
         if love.keyboard.isDown('d') then
             self.velocity.x = self.speed
@@ -47,17 +47,15 @@ function Player:update(dt)
         if self:isTouchingCeiling() then
             self.velocity.y = self.gravity * dt
         elseif self:isOnGround() then
-            if self.justJumped then
-                self.justJumped = false
-            else
-                self.velocity.y = 0
-            end
+            if self.justJumped then self.justJumped = false end
+            self.wasTouchingGround = true
+        elseif self.wasTouchingGround and not self.justJumped then
+            self.wasTouchingGround = false
+            self.velocity.y = 0
         end
 
         for i, col in ipairs(cols) do
-            if col.other.id == 'water' then
-                self:die()
-            end
+            if col.other.id == 'water' then self:die() end
         end
     else
         if self.velocity.y < 0 then
@@ -98,7 +96,7 @@ function Player:relativePositionForID(relativeX, relativeY, id)
 end
 
 function Player:isOnGround()
-    return self:relativePositionForID(0, 1, 'ground')
+    return self:relativePositionForID(0, 5, 'ground')
 end
 
 function Player:isTouchingCeiling()
@@ -109,7 +107,6 @@ function Player:keypressed(key)
     if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
         self.velocity.y = self.jumpVelocity
         self.justJumped = true
-        print("yay")
     end
 end
 
