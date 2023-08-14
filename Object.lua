@@ -18,6 +18,18 @@ function Object:new(id, x, y, w, h)
     return obj
 end
 
+function Object:updateMovement(dt, filter)
+    local goalX = self.position.x + self.velocity.x * dt
+    local goalY = self.position.y + self.velocity.y * dt
+    local actualX, actualY, cols, len = game.world:move(
+        self, goalX, goalY, filter
+    )
+    self.position.x = actualX or self.position.x
+    self.position.y = actualY or self.position.y
+
+    return actualX, actualY, cols, len
+end
+
 function Object:draw()
     local x, y, w, h = game.world:getRect(self)
     love.graphics.rectangle('fill', x, y, w, h)

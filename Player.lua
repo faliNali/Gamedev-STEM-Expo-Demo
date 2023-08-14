@@ -22,15 +22,17 @@ end
 function Player:update(dt)
     local function gravityUpdate()
         if self.useGravity then
+            -- gravity is halved because it's called twice
+            --  once before movement and once after movement
             self.velocity.y = self.velocity.y + self.gravity * dt * 0.5
         end
     end
 
     gravityUpdate()
-    local goalX = self.position.x + self.velocity.x * dt
-    local goalY = self.position.y + self.velocity.y * dt
-    local actualX, actualY, cols = game.world:move(self, goalX, goalY,
-        self.alive and self.filter or function(item, other) return false end)
+    local actualX, actualY, cols = self:updateMovement(
+        dt,
+        self.alive and self.filter or function(item, other) return false end
+    )
     
     self.position.x = actualX or self.position.x
     self.position.y = actualY or self.position.y

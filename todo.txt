@@ -1,0 +1,3 @@
+- add flag for end
+- restart game when reaching end or dead
+-- add cool restart game screen effect
