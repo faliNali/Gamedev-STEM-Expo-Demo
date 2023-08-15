@@ -9,6 +9,7 @@ function Player:new(x, y)
     self.__index = self
     
     p.alive = true
+    p.readyForRestart = false
     p.speed = 300
     p.gravity = 1200
     p.useGravity = true
@@ -23,7 +24,7 @@ function Player:update(dt)
     local function gravityUpdate()
         if self.useGravity then
             -- gravity is halved because it's called twice
-            --  once before movement and once after movement
+            --   once before movement and once after movement
             self.velocity.y = self.velocity.y + self.gravity * dt * 0.5
         end
     end
@@ -57,7 +58,8 @@ function Player:update(dt)
         end
 
         for i, col in ipairs(cols) do
-            if col.other.id == 'water' then self:die() end
+            if col.other.id == 'water' then self:die()
+            elseif col.other.id == 'flag' then self:win() end
         end
     else
         if self.velocity.y < 0 then
@@ -65,6 +67,7 @@ function Player:update(dt)
         else
             self.useGravity = false
             self.velocity.y = 0
+            self.readyForRestart = true
         end
     end
 
@@ -72,7 +75,7 @@ function Player:update(dt)
 end
 
 function Player.filter(item, other)
-    if other.id == 'ground' then return 'slide'
+    if other.id == 'flag' then return 'cross'
     else return 'slide' end
 end
 
@@ -80,6 +83,10 @@ function Player:die()
     self.alive = false
     self.velocity.x = 0
     self.velocity.y = self.jumpVelocity
+end
+
+function Player:win()
+    print('wow')
 end
 
 function Player:relativePositionCols(relativeX, relativeY)

@@ -1,6 +1,11 @@
 local game
+local map
+local Player
+local Flag
+
 local tiles
 local player
+local flag
 
 local function getMapLayer(map, layerName)
     for i, layer in ipairs(map.layers) do
@@ -10,12 +15,8 @@ local function getMapLayer(map, layerName)
     end
 end
 
-function love.load()
-    game = require "game"
-
-    local map = require "maps/level1"
-    local Player = require 'Player'
-    
+local function restartGame()
+    game:resetWorld()
     local tileLayer = getMapLayer(map, "Tiles")
     tiles = {}
     for i, tileData in ipairs(tileLayer.data) do
@@ -29,14 +30,27 @@ function love.load()
 
             table.insert(tiles, tile)
             game.world:add(tile, tile.x, tile.y, game.tileSize, game.tileSize)
-        elseif tileData == 6 then
-            player = Player:new(tileX, tileY)
-        end
+        elseif tileData == 4 then 
+            flag = Flag:new(tileX, tileY)
+        elseif tileData == 5 then
+        elseif tileData == 6 then player = Player:new(tileX, tileY) end
     end
+end
+
+function love.load()
+    game = require "game"
+    map = require "maps/level1"
+    Player = require 'Player'
+    Flag = require 'Flag'
+    
+    restartGame()
 end
 
 function love.update(dt)
     player:update(dt)
+    if player.readyForRestart then
+        print('wow')
+    end
 end
 
 function love.keypressed(key)

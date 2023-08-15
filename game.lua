@@ -16,4 +16,8 @@ game.tileQuads = {
     water = love.graphics.newQuad(ts, 0, ts, ts, game.sprites.tiles)
 }
 
+function game:resetWorld()
+    game.world = bump.newWorld(80)
+end
+
 return game
