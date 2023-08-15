@@ -1,3 +1,6 @@
-- add flag for end
-- restart game when reaching end or dead
--- add cool restart game screen effect
+- add end screen when finishing game
+  - make it say "JOIN GAMEDEV CLUB"
+- add death animation
+
+- add walking enemy
+- add flying enemy

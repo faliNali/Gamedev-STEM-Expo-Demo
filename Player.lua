@@ -112,6 +112,8 @@ function Player:isTouchingCeiling()
     return self:relativePositionForID(0, -1, 'ground')
 end
 
+function Player:isReadyForGameRestart() return self.readyForRestart end
+
 function Player:keypressed(key)
     if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
         self.velocity.y = self.jumpVelocity

@@ -2,10 +2,12 @@ local game
 local map
 local Player
 local Flag
+local DeathScreen
 
 local tiles
 local player
 local flag
+local deathScreen
 
 local function getMapLayer(map, layerName)
     for i, layer in ipairs(map.layers) do
@@ -42,14 +44,24 @@ function love.load()
     map = require "maps/level1"
     Player = require 'Player'
     Flag = require 'Flag'
+    DeathScreen = require 'DeathScreen'
+
+    deathScreen = DeathScreen:new()
     
     restartGame()
 end
 
 function love.update(dt)
     player:update(dt)
-    if player.readyForRestart then
-        print('wow')
+    deathScreen:update(dt)
+
+    if player:isReadyForGameRestart() then
+        deathScreen:start()
+    end
+
+    if deathScreen:isCovered() then
+        restartGame()
+        deathScreen:finish()
     end
 end
 
@@ -72,4 +84,6 @@ function love.draw()
     end
 
     player:draw()
+
+    deathScreen:draw()
 end
