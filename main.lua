@@ -2,12 +2,14 @@ local game
 local map
 local Player
 local Flag
-local DeathScreen
+local RestartScreen
+local WinScreen
 
 local tiles
 local player
 local flag
-local deathScreen
+local restartScreen
+local winScreen
 
 local function getMapLayer(map, layerName)
     for i, layer in ipairs(map.layers) do
@@ -18,6 +20,8 @@ local function getMapLayer(map, layerName)
 end
 
 local function restartGame()
+    winScreen:finish()
+    restartScreen:finish()
     game:resetWorld()
     local tileLayer = getMapLayer(map, "Tiles")
     tiles = {}
@@ -44,30 +48,41 @@ function love.load()
     map = require "maps/level1"
     Player = require 'Player'
     Flag = require 'Flag'
-    DeathScreen = require 'DeathScreen'
+    RestartScreen = require 'RestartScreen'
+    WinScreen = require 'WinScreen'
 
-    deathScreen = DeathScreen:new()
+    restartScreen = RestartScreen:new()
+    winScreen = WinScreen:new()
     
     restartGame()
 end
 
 function love.update(dt)
     player:update(dt)
-    deathScreen:update(dt)
+    restartScreen:update(dt)
+    winScreen:update(dt)
 
     if player:isReadyForGameRestart() then
-        deathScreen:start()
+        restartScreen:start()
     end
 
-    if deathScreen:isCovered() then
+    if restartScreen:isCovered() then
         restartGame()
-        deathScreen:finish()
+    end
+
+    if player:justWonGame() then
+        winScreen:start()
     end
 end
 
 function love.keypressed(key)
     if key == 'q' or key == 'escape' then
         love.event.quit()
+    end
+
+    if key == 'r' then
+        print("wow")
+        restartScreen:start()
     end
     player:keypressed(key)
 end
@@ -83,7 +98,8 @@ function love.draw()
         end
     end
 
+    flag:draw()
     player:draw()
-
-    deathScreen:draw()
+    winScreen:draw()
+    restartScreen:draw()
 end

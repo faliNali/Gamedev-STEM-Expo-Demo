@@ -16,6 +16,8 @@ function Player:new(x, y)
     p.jumpVelocity = -450
     p.justJumped = false
     p.wasTouchingGround = false
+    p.touchedFlag = false
+    p.justTouchedFlag = false
     
     return p
 end
@@ -86,7 +88,8 @@ function Player:die()
 end
 
 function Player:win()
-    print('wow')
+    self.justTouchedFlag = not self.touchedFlag
+    self.touchedFlag = true
 end
 
 function Player:relativePositionCols(relativeX, relativeY)
@@ -113,6 +116,8 @@ function Player:isTouchingCeiling()
 end
 
 function Player:isReadyForGameRestart() return self.readyForRestart end
+
+function Player:justWonGame() return self.justTouchedFlag end
 
 function Player:keypressed(key)
     if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then

@@ -1,4 +1,4 @@
-local DeathScreen = {}
+local RestartScreen = {}
 
 local states = {
     clear = 1,
@@ -7,9 +7,9 @@ local states = {
     clearing = 4
 }
 
-function DeathScreen:new()
-    local ds = {}
-    setmetatable(ds, self)
+function RestartScreen:new()
+    local rs = {}
+    setmetatable(rs, self)
     self.__index = self
 
     self.extraCoverWidth = -1000
@@ -21,7 +21,7 @@ function DeathScreen:new()
     return self
 end
 
-function DeathScreen:update(dt)
+function RestartScreen:update(dt)
     if self.state == states.covering then
         if self.rightX < love.graphics.getWidth() then
             self.rightX = self.rightX + self.speed * dt
@@ -38,19 +38,19 @@ function DeathScreen:update(dt)
     end
 end
 
-function DeathScreen:start()
+function RestartScreen:start()
     if self.state == states.clear then self.state = states.covering end
 end
 
-function DeathScreen:finish()
+function RestartScreen:finish()
     if self.state == states.covered then self.state = states.clearing end
 end
 
-function DeathScreen:isCovered()
+function RestartScreen:isCovered()
     return self.state == states.covered
 end
 
-function DeathScreen:draw()
+function RestartScreen:draw()
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle(
         'fill', self.leftX, 0,
@@ -59,4 +59,4 @@ function DeathScreen:draw()
     love.graphics.setColor(1, 1, 1)
 end
 
-return DeathScreen
+return RestartScreen
