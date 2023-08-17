@@ -44,6 +44,8 @@ local function restartGame()
 end
 
 function love.load()
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+
     game = require "game"
     map = require "maps/level1"
     Player = require 'Player'
@@ -61,6 +63,7 @@ function love.update(dt)
     player:update(dt)
     restartScreen:update(dt)
     winScreen:update(dt)
+    game.screenShaker:update(dt)
 
     if player:isReadyForGameRestart() then
         restartScreen:start()
@@ -81,13 +84,13 @@ function love.keypressed(key)
     end
 
     if key == 'r' then
-        print("wow")
         restartScreen:start()
     end
     player:keypressed(key)
 end
 
 function love.draw()
+    game.screenShaker:translate()
     for i, tile in ipairs(tiles) do
         local x, y, w, h = game.world:getRect(tile)
         love.graphics.rectangle('line', x, y, w, h)

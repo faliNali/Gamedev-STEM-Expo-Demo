@@ -1,4 +1,2 @@
-- add death animation
-
 - add walking enemy
 - add flying enemy

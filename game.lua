@@ -1,13 +1,16 @@
 local map = require 'maps/level1'
 local bump = require "lib/bump"
+local ScreenShaker = require 'ScreenShaker'
 
 local game = {}
 
 game.world = bump.newWorld(80)
 game.tileSize = map.tilewidth
+game.screenShaker = ScreenShaker:new()
 
 game.sprites = {
-    tiles = love.graphics.newImage("maps/tileset1.png")
+    tiles = love.graphics.newImage("maps/tileset1.png"),
+    particle = love.graphics.newImage("images/particle.png")
 }
 
 local ts = game.tileSize

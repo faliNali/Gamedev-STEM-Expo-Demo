@@ -10,7 +10,7 @@ function Player:new(x, y)
     self.__index = self
     
     p.alive = true
-    p.readyForRestart = false
+    p.exists = true
 
     p.speed = 300
     p.gravity = 1200
@@ -21,13 +21,16 @@ function Player:new(x, y)
 
     p.touchedFlag = false
     p.justTouchedFlag = false
-    p.particleEffect = ParticleEffect:new(60, 3)
+
+    p.jumpParticles = ParticleEffect:new(game.sprites.particle, 120, 2, true)
+    p.deathParticles = ParticleEffect:new(game.sprites.particle, 200, 2, true)
     
     return p
 end
 
 function Player:update(dt)
-    self.particleEffect:update(dt)
+    self.jumpParticles:update(dt)
+    self.deathParticles:update(dt)
 
     local function gravityUpdate()
         if self.useGravity then
@@ -69,13 +72,20 @@ function Player:update(dt)
             if col.other.id == 'water' then self:die()
             elseif col.other.id == 'flag' then self:win() end
         end
-    else
+    elseif self.exists then
         if self.velocity.y < 0 then
             self.useGravity = true
         else
+            self.exists = false
             self.useGravity = false
             self.velocity.y = 0
-            self.readyForRestart = true
+
+            game.screenShaker:shake(25, 80)
+            
+            local _, _, w, h = game.world:getRect(self)
+            self.deathParticles:spawnParticles(
+                self.position.x + w/2, self.position.y + h/2, 10
+            )
         end
     end
 
@@ -87,10 +97,30 @@ function Player.filter(item, other)
     else return 'slide' end
 end
 
+function Player:keypressed(key)
+    if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
+        self.velocity.y = self.jumpVelocity
+        self.justJumped = true
+
+        local x, y, w, h = game.world:getRect(self)
+        self.jumpParticles:spawnParticles(x + w/2, y + h, 3)
+    end
+end
+
+function Player:draw()
+    self.jumpParticles:draw()
+    self.deathParticles:draw()
+    if self.exists then
+        local x, y, w, h = game.world:getRect(self)
+        love.graphics.rectangle('fill', x, y, w, h)
+    end
+end
+
 function Player:die()
     self.alive = false
     self.velocity.x = 0
     self.velocity.y = self.jumpVelocity
+    game.screenShaker:shake(5, 60)
 end
 
 function Player:win()
@@ -105,7 +135,7 @@ function Player:relativePositionCols(relativeX, relativeY)
 end
 
 function Player:relativePositionForID(relativeX, relativeY, id)
-    local actualX, actualY, cols = self:relativePositionCols(relativeX, relativeY)
+    local _, _, cols = self:relativePositionCols(relativeX, relativeY)
 
     for i, col in ipairs(cols) do
         if col.other.id == id then return true end
@@ -121,24 +151,10 @@ function Player:isTouchingCeiling()
     return self:relativePositionForID(0, -1, 'ground')
 end
 
-function Player:isReadyForGameRestart() return self.readyForRestart end
+function Player:isReadyForGameRestart()
+    return not self.deathParticles:hasParticles() and not self.exists
+end
 
 function Player:justWonGame() return self.justTouchedFlag end
-
-function Player:keypressed(key)
-    if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
-        self.velocity.y = self.jumpVelocity
-        self.justJumped = true
-
-        local x, y, w, h = game.world:getRect(self)
-        self.particleEffect:start(x + w/2, y + h)
-    end
-end
-
-function Player:draw()
-    self.particleEffect:draw()
-    local x, y, w, h = game.world:getRect(self)
-    love.graphics.rectangle('fill', x, y, w, h)
-end
 
 return Player
