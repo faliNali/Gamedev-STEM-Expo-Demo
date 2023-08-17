@@ -1,4 +1,5 @@
 local Object = require 'Object'
+local ParticleEffect = require 'ParticleEffect'
 local game = require 'game'
 
 local Player = Object:new()
@@ -10,19 +11,24 @@ function Player:new(x, y)
     
     p.alive = true
     p.readyForRestart = false
+
     p.speed = 300
     p.gravity = 1200
     p.useGravity = true
     p.jumpVelocity = -450
     p.justJumped = false
     p.wasTouchingGround = false
+
     p.touchedFlag = false
     p.justTouchedFlag = false
+    p.particleEffect = ParticleEffect:new(60, 3)
     
     return p
 end
 
 function Player:update(dt)
+    self.particleEffect:update(dt)
+
     local function gravityUpdate()
         if self.useGravity then
             -- gravity is halved because it's called twice
@@ -123,10 +129,14 @@ function Player:keypressed(key)
     if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
         self.velocity.y = self.jumpVelocity
         self.justJumped = true
+
+        local x, y, w, h = game.world:getRect(self)
+        self.particleEffect:start(x + w/2, y + h)
     end
 end
 
 function Player:draw()
+    self.particleEffect:draw()
     local x, y, w, h = game.world:getRect(self)
     love.graphics.rectangle('fill', x, y, w, h)
 end

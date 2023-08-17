@@ -1,5 +1,3 @@
-- add end screen when finishing game
-  - make it say "JOIN GAMEDEV CLUB"
 - add death animation
 
 - add walking enemy
