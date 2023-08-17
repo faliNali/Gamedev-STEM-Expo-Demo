@@ -12,10 +12,10 @@ function Player:new(x, y)
     p.alive = true
     p.exists = true
 
-    p.speed = 300
-    p.gravity = 1200
+    p.speed = 150
+    p.gravity = 600
     p.useGravity = true
-    p.jumpVelocity = -450
+    p.jumpVelocity = -225
     p.justJumped = false
     p.wasTouchingGround = false
 
@@ -144,7 +144,7 @@ function Player:relativePositionForID(relativeX, relativeY, id)
 end
 
 function Player:isOnGround()
-    return self:relativePositionForID(0, 5, 'ground')
+    return self:relativePositionForID(0, 2, 'ground')
 end
 
 function Player:isTouchingCeiling()

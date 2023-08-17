@@ -47,7 +47,7 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     game = require "game"
-    map = require "maps/level1"
+    map = require "maps/map"
     Player = require 'Player'
     Flag = require 'Flag'
     RestartScreen = require 'RestartScreen'
@@ -91,9 +91,10 @@ end
 
 function love.draw()
     game.screenShaker:translate()
+    love.graphics.scale(2, 2)
     for i, tile in ipairs(tiles) do
         local x, y, w, h = game.world:getRect(tile)
-        love.graphics.rectangle('line', x, y, w, h)
+        --love.graphics.rectangle('line', x, y, w, h)
         if tile.id == 'ground' then
             love.graphics.draw(game.sprites.tiles, game.tileQuads.ground, x, y)
         elseif tile.id == 'water' then

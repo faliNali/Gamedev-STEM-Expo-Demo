@@ -1,3 +1,4 @@
+local game = require "game"
 local WinScreen = {}
 
 function WinScreen:new()
@@ -5,12 +6,12 @@ function WinScreen:new()
     setmetatable(ws, self)
     self.__index = self
 
-    ws.startY = -200
-    ws.targetY = love.graphics.getHeight()/2
+    ws.startY = -100
+    ws.targetY = game.getHeight()/2
     ws.y = ws.startY
-    ws.height = 300
+    ws.height = 150
     ws.velocity = 0
-    ws.gravity = 50
+    ws.gravity = 25
     ws.show = false
     ws.stopped = false
 
@@ -46,12 +47,12 @@ function WinScreen:draw()
     if self.show then
         love.graphics.setColor(0, 0, 0, 0.9)
         love.graphics.rectangle(
-            'fill', 0, self.y - self.height/2, love.graphics.getWidth(), self.height
+            'fill', 0, self.y - self.height/2, game.getWidth(), self.height
         )
         love.graphics.setColor(1, 1, 1)
         love.graphics.printf(
             "Game Finished!\nJOIN GAMEDEV CLUB!! :DD\nPress R to Restart",
-            0, self.y - 100, love.graphics.getWidth(), "center"
+            0, self.y - 50, game.getWidth(), "center"
         )
     end
 end
