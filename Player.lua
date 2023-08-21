@@ -15,8 +15,6 @@ function Player:new(x, y)
     p.speed = 150
     
     p.jumpVelocity = -225
-    p.justJumped = false
-    p.wasTouchingGround = false
 
     p.touchedFlag = false
     p.justTouchedFlag = false
@@ -31,14 +29,10 @@ function Player:update(dt)
     self.jumpParticles:update(dt)
     self.deathParticles:update(dt)
 
-    self:updateHalfGravity(dt)
     local actualX, actualY, cols = self:updateMovement(
         dt,
-        self.alive and self.filter or function(item, other) return false end
+        not self.alive and function(item, other) return false end or nil
     )
-    
-    self.position.x = actualX or self.position.x
-    self.position.y = actualY or self.position.y
     
     if self.alive then
         if love.keyboard.isDown('d') then
@@ -49,18 +43,8 @@ function Player:update(dt)
             self.velocity.x = 0
         end
 
-        if self:isTouchingCeiling() then
-            self.velocity.y = self.gravity * dt
-        elseif self:isOnGround() then
-            if self.justJumped then self.justJumped = false end
-            self.wasTouchingGround = true
-        elseif self.wasTouchingGround and not self.justJumped then
-            self.wasTouchingGround = false
-            self.velocity.y = 0
-        end
-
         for i, col in ipairs(cols) do
-            if col.other.id == 'water' then self:die()
+            if col.other.id == 'water' or col.other.id == 'enemy' then self:die()
             elseif col.other.id == 'flag' then self:win() end
         end
     elseif self.exists then
@@ -79,8 +63,6 @@ function Player:update(dt)
             )
         end
     end
-
-    self:updateHalfGravity(dt)
 end
 
 function Player.filter(item, other)
@@ -89,12 +71,13 @@ function Player.filter(item, other)
 end
 
 function Player:keypressed(key)
-    if (key == 'w' or key == 'space') and self:isOnGround() and self.alive then
-        self.velocity.y = self.jumpVelocity
-        self.justJumped = true
+    if self.alive then
+        if (key == 'w' or key == 'space') and self:isOnGround() then
+            self.velocity.y = self.jumpVelocity
 
-        local x, y, w, h = game.world:getRect(self)
-        self.jumpParticles:spawnParticles(x + w/2, y + h, 3)
+            local x, y, w, h = game.world:getRect(self)
+            self.jumpParticles:spawnParticles(x + w/2, y + h, 3)
+        end
     end
 end
 
@@ -117,29 +100,6 @@ end
 function Player:win()
     self.justTouchedFlag = not self.touchedFlag
     self.touchedFlag = true
-end
-
-function Player:relativePositionCols(relativeX, relativeY)
-    return game.world:check(
-        self, self.position.x+relativeX, self.position.y+relativeY, Player.filter
-    )
-end
-
-function Player:relativePositionForID(relativeX, relativeY, id)
-    local _, _, cols = self:relativePositionCols(relativeX, relativeY)
-
-    for i, col in ipairs(cols) do
-        if col.other.id == id then return true end
-    end
-    return false
-end
-
-function Player:isOnGround()
-    return self:relativePositionForID(0, 2, 'ground')
-end
-
-function Player:isTouchingCeiling()
-    return self:relativePositionForID(0, -1, 'ground')
 end
 
 function Player:isReadyForGameRestart()

@@ -24,7 +24,7 @@ game.tileQuads = {
 game.font = love.graphics.newFont('fonts/DinaRemasterII.ttc', 32)
 love.graphics.setFont(game.font)
 
-function game:resetWorld()
+function game.resetWorld()
     game.world = bump.newWorld(80)
 end
 
