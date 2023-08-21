@@ -11,6 +11,8 @@ local flag
 local restartScreen
 local winScreen
 
+local enemy
+
 local function getMapLayer(map, layerName)
     for i, layer in ipairs(map.layers) do
         if layer.name == layerName then
@@ -44,6 +46,7 @@ local function restartGame()
 end
 
 function love.load()
+    math.randomseed(os.time())
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     game = require "game"
@@ -52,6 +55,9 @@ function love.load()
     Flag = require 'Flag'
     RestartScreen = require 'RestartScreen'
     WinScreen = require 'WinScreen'
+
+    Enemy = require 'Enemy'
+    enemy = Enemy:new(800, 400)
 
     restartScreen = RestartScreen:new()
     winScreen = WinScreen:new()
@@ -106,4 +112,8 @@ function love.draw()
     player:draw()
     winScreen:draw()
     restartScreen:draw()
+
+    if game.world:hasItem(enemy) then
+        enemy:draw()
+    end
 end

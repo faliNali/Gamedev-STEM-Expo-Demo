@@ -13,8 +13,7 @@ function Player:new(x, y)
     p.exists = true
 
     p.speed = 150
-    p.gravity = 600
-    p.useGravity = true
+    
     p.jumpVelocity = -225
     p.justJumped = false
     p.wasTouchingGround = false
@@ -32,15 +31,7 @@ function Player:update(dt)
     self.jumpParticles:update(dt)
     self.deathParticles:update(dt)
 
-    local function gravityUpdate()
-        if self.useGravity then
-            -- gravity is halved because it's called twice
-            --   once before movement and once after movement
-            self.velocity.y = self.velocity.y + self.gravity * dt * 0.5
-        end
-    end
-
-    gravityUpdate()
+    self:updateHalfGravity(dt)
     local actualX, actualY, cols = self:updateMovement(
         dt,
         self.alive and self.filter or function(item, other) return false end
@@ -89,7 +80,7 @@ function Player:update(dt)
         end
     end
 
-    gravityUpdate()
+    self:updateHalfGravity(dt)
 end
 
 function Player.filter(item, other)

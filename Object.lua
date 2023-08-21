@@ -10,6 +10,10 @@ function Object:new(id, x, y, w, h)
     obj.id = id or 'object'
     obj.position = {x=x or 0, y=y or 0}
     obj.velocity = {x=0, y=0}
+
+    obj.gravity = 600
+    obj.useGravity = true
+
     game.world:add(
         obj, obj.position.x, obj.position.y,
         w or game.tileSize, h or game.tileSize
@@ -28,6 +32,14 @@ function Object:updateMovement(dt, filter)
     self.position.y = actualY or self.position.y
 
     return actualX, actualY, cols, len
+end
+
+function Object:updateHalfGravity(dt)
+    if self.useGravity then
+        -- gravity is halved because it's called twice
+        --   once before movement and once after movement
+        self.velocity.y = self.velocity.y + self.gravity * dt * 0.5
+    end
 end
 
 function Object:draw()
