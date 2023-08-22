@@ -21,6 +21,7 @@ game.sprites = {
     enemy = love.graphics.newImage('images/enemy.png'),
     flyingEnemy = love.graphics.newImage('images/flyingEnemy.png'),
     flag = love.graphics.newImage('images/flag.png'),
+    flagParticle = love.graphics.newImage('images/flagParticle.png'),
     water = love.graphics.newImage('images/water.png')
 }
 
@@ -43,7 +44,9 @@ game.anims = {
         jumpUp = anim8.newAnimation(q.player(1,3), 1),
         jumpDown = anim8.newAnimation(q.player(2,3), 1)
     },
-    enemy = anim8.newAnimation(q.enemy('1-2',1), 0.5)
+    enemy = anim8.newAnimation(q.enemy('1-2',1), 0.5),
+    flag = anim8.newAnimation(q.flag('1-3',1), 0.25),
+    water = anim8.newAnimation(q.water('1-3',1), 0.5)
 }
 
 game.tileQuads = {

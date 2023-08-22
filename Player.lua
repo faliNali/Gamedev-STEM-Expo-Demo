@@ -5,7 +5,7 @@ local game = require 'game'
 local Player = Object:new()
 
 function Player:new(x, y)
-    local p = Object:new('player', x, y, game.tileSize * 3/4, game.tileSize)
+    local p = Object:new('player', x, y, game.tileSize * 1/2, game.tileSize)
     setmetatable(p, self)
     self.__index = self
     
@@ -19,7 +19,7 @@ function Player:new(x, y)
     p.touchedFlag = false
     p.justTouchedFlag = false
 
-    p.jumpParticles = ParticleEffect:new(game.sprites.particle, 120, 2, true)
+    p.jumpParticles = ParticleEffect:new(game.sprites.particle, 60, 2, true)
     p.deathParticles = ParticleEffect:new(game.sprites.particle, 200, 2, true)
 
     p.anim = game.anims.player.idle
@@ -63,7 +63,10 @@ function Player:update(dt)
 
         for i, col in ipairs(cols) do
             if col.other.id == 'water' then self:die()
-            elseif col.other.id == 'flag' then self:win() end
+            elseif col.other.id == 'flag'then
+                self:win()
+                col.other:spawnParticles()
+            end
         end
     elseif self.exists then
         if self.velocity.y < 0 then
@@ -106,7 +109,7 @@ function Player:draw()
         local x, y, w, h = game.world:getRect(self)
         --[[ love.graphics.setColor(1, 1, 1, 0.5)
         love.graphics.rectangle('fill', x, y, w, h)
-        love.graphics.setColor(1, 1, 1)  ]]
+        love.graphics.setColor(1, 1, 1) ]]
         self.anim:draw(
             game.sprites.player,
             x + w/2,

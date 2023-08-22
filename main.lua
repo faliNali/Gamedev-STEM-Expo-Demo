@@ -83,6 +83,8 @@ function love.update(dt)
     restartScreen:update(dt)
     winScreen:update(dt)
     game.screenShaker:update(dt)
+    flag:update(dt)
+    game.anims.water:update(dt)
 
     if player:isReadyForGameRestart() then
         restartScreen:start()
@@ -117,7 +119,7 @@ function love.draw()
         if tile.id == 'ground' then
             love.graphics.draw(game.sprites.tiles, game.tileQuads.ground, x, y)
         elseif tile.id == 'water' then
-            love.graphics.draw(game.sprites.tiles, game.tileQuads.water, x, y)
+            game.anims.water:draw(game.sprites.water, x, y)
         end
     end
 
