@@ -17,6 +17,7 @@ end
 
 function EnemyManager:update(dt)
     self.particles:update(dt)
+    Enemy.anim:update(dt)
 
     for i, enemy in ipairs(self.enemies) do
         if enemy.id == 'deadEnemy' then

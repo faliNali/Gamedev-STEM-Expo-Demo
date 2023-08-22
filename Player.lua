@@ -21,6 +21,8 @@ function Player:new(x, y)
 
     p.jumpParticles = ParticleEffect:new(game.sprites.particle, 120, 2, true)
     p.deathParticles = ParticleEffect:new(game.sprites.particle, 200, 2, true)
+
+    p.anim = game.anims.player.idle
     
     return p
 end
@@ -28,19 +30,29 @@ end
 function Player:update(dt)
     self.jumpParticles:update(dt)
     self.deathParticles:update(dt)
+    self.anim:update(dt)
 
-    local actualX, actualY, cols = self:updateMovement(
+    local _, _, cols = self:updateMovement(
         dt,
         not self.alive and function(item, other) return false end or nil
     )
     
     if self.alive then
+        self.anim = game.anims.player.walk
         if love.keyboard.isDown('d') then
             self.velocity.x = self.speed
+            self.scale.x = 1
         elseif love.keyboard.isDown('a') then
             self.velocity.x = -self.speed
+            self.scale.x = -1
         else
             self.velocity.x = 0
+            self.anim = game.anims.player.idle
+        end
+
+        if #self:checkBelow('ground') == 0 then
+            if self.velocity.y < 60 then self.anim = game.anims.player.jumpUp
+            else self.anim = game.anims.player.jumpDown end
         end
 
         local deadEnemyCols = self:checkBelow('enemy')
@@ -50,7 +62,7 @@ function Player:update(dt)
         end
 
         for i, col in ipairs(cols) do
-            if col.other.id == 'water' or col.other.id == 'enemy' then self:die()
+            if col.other.id == 'water' then self:die()
             elseif col.other.id == 'flag' then self:win() end
         end
     elseif self.exists then
@@ -92,11 +104,23 @@ function Player:draw()
     self.deathParticles:draw()
     if self.exists then
         local x, y, w, h = game.world:getRect(self)
+        --[[ love.graphics.setColor(1, 1, 1, 0.5)
         love.graphics.rectangle('fill', x, y, w, h)
+        love.graphics.setColor(1, 1, 1)  ]]
+        self.anim:draw(
+            game.sprites.player,
+            x + w/2,
+            y,
+            0,
+            self.scale.x,
+            self.scale.y,
+            game.tileSize/2
+        )
     end
 end
 
 function Player:die()
+    self.anim = game.anims.player.dead
     self.alive = false
     self.velocity.x = 0
     self.velocity.y = self.jumpVelocity

@@ -9,6 +9,7 @@ function Object:new(id, x, y, w, h)
 
     obj.id = id or 'object'
     obj.position = {x=x or 0, y=y or 0}
+    obj.scale = {x=1, y=1}
     obj.velocity = {x=0, y=0}
 
     obj.gravity = 600
