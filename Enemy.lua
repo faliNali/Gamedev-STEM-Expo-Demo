@@ -1,6 +1,5 @@
 local Object = require 'Object'
 local game = require 'game'
-
 local Enemy = Object:new()
 
 function Enemy:new(x, y)
@@ -19,8 +18,8 @@ function Enemy:update(dt)
 
     self.velocity.x = self.direction * self.speed
 
-    if self:isOnGround(self.filter) then
-        _, _, wallCols = self:relativePositionCols(self.direction, 0)
+    if #self:checkBelow('ground') > 0 then
+        _, _, wallCols = self:checkRelativePosition(self.direction, 0)
 
         local x, y, w, h = game.world:getRect(self)
         local groundCols = game.world:queryPoint(
@@ -31,6 +30,10 @@ function Enemy:update(dt)
             self.direction = -self.direction
         end
     end
+end
+
+function Enemy:die()
+    self.id = 'deadEnemy'
 end
 
 function Enemy.filter(item, other)

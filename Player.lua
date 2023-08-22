@@ -43,6 +43,12 @@ function Player:update(dt)
             self.velocity.x = 0
         end
 
+        local deadEnemyCols = self:checkBelow('enemy')
+        for i, enemyCol in ipairs(deadEnemyCols) do
+            enemyCol.other:die()
+            self.velocity.y = self.jumpVelocity
+        end
+
         for i, col in ipairs(cols) do
             if col.other.id == 'water' or col.other.id == 'enemy' then self:die()
             elseif col.other.id == 'flag' then self:win() end
@@ -72,7 +78,7 @@ end
 
 function Player:keypressed(key)
     if self.alive then
-        if (key == 'w' or key == 'space') and self:isOnGround() then
+        if (key=='w' or key=='space') and #self:checkBelow('ground') > 0 then
             self.velocity.y = self.jumpVelocity
 
             local x, y, w, h = game.world:getRect(self)

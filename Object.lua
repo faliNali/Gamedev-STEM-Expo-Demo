@@ -39,9 +39,9 @@ function Object:updateMovement(dt, filter)
     self.position.x = actualX or self.position.x
     self.position.y = actualY or self.position.y
     if self.useGravity then
-        if self:isTouchingCeiling(filter) then
+        if #self:checkAbove('ground', filter) > 0 then
             self.velocity.y = self.gravity * dt
-        elseif self:isOnGround(filter) then
+        elseif #self:checkBelow('ground', filter) > 0 then
             self.velocity.y = 0
         end
         
@@ -56,7 +56,7 @@ function Object:draw()
     love.graphics.rectangle('fill', x, y, w, h)
 end
 
-function Object:relativePositionCols(relativeX, relativeY, filter)
+function Object:checkRelativePosition(relativeX, relativeY, filter)
     return game.world:check(
         self,
         self.position.x+relativeX,
@@ -65,21 +65,22 @@ function Object:relativePositionCols(relativeX, relativeY, filter)
     )
 end
 
-function Object:relativePositionForID(relativeX, relativeY, id, filter)
-    local _, _, cols = self:relativePositionCols(relativeX, relativeY, filter)
+function Object:checkRelativePositionForID(relativeX, relativeY, id, filter)
+    local _, _, cols = self:checkRelativePosition(relativeX, relativeY, filter)
 
+    local correctCols = {}
     for i, col in ipairs(cols) do
-        if col.other.id == id then return true end
+        if col.other.id == id then table.insert(correctCols, col) end
     end
-    return false
+    return correctCols
 end
 
-function Object:isOnGround(filter)
-    return self:relativePositionForID(0, 2, 'ground', filter)
+function Object:checkBelow(id, filter)
+    return self:checkRelativePositionForID(0, 2, id, filter)
 end
 
-function Object:isTouchingCeiling(filter)
-    return self:relativePositionForID(0, -1, 'ground', filter)
+function Object:checkAbove(id, filter)
+    return self:checkRelativePositionForID(0, -1, id, filter)
 end
 
 return Object

@@ -4,15 +4,14 @@ local Player
 local Flag
 local RestartScreen
 local WinScreen
-local Enemy
+local EnemyManager
 
 local tiles
 local player
 local flag
+local enemyManager
 local restartScreen
 local winScreen
-
-local enemy
 
 local function getMapLayer(map, layerName)
     for i, layer in ipairs(map.layers) do
@@ -25,7 +24,10 @@ end
 local function restartGame()
     winScreen:finish()
     restartScreen:finish()
+    enemyManager:clearEnemies()
+
     game.resetWorld()
+
     local tileLayer = getMapLayer(map, "Tiles")
     tiles = {}
     for i, tileData in ipairs(tileLayer.data) do
@@ -45,7 +47,7 @@ local function restartGame()
         elseif tileData == 6 then player = Player:new(tileX, tileY) end
     end
 
-    enemy = Enemy:new(200, 150)
+    enemyManager:newEnemy(200, 150)
 end
 
 function love.load()
@@ -57,9 +59,11 @@ function love.load()
     Player = require 'Player'
     Enemy = require 'Enemy'
     Flag = require 'Flag'
+    EnemyManager = require 'EnemyManager'
     RestartScreen = require 'RestartScreen'
     WinScreen = require 'WinScreen'
 
+    enemyManager = EnemyManager:new()
     restartScreen = RestartScreen:new()
     winScreen = WinScreen:new()
     
@@ -68,11 +72,10 @@ end
 
 function love.update(dt)
     player:update(dt)
+    enemyManager:update(dt)
     restartScreen:update(dt)
     winScreen:update(dt)
     game.screenShaker:update(dt)
-
-    enemy:update(dt)
 
     if player:isReadyForGameRestart() then
         restartScreen:start()
@@ -111,10 +114,9 @@ function love.draw()
         end
     end
 
+    enemyManager:draw()
     flag:draw()
     player:draw()
     winScreen:draw()
     restartScreen:draw()
-
-    enemy:draw()
 end
