@@ -21,11 +21,18 @@ local function getMapLayer(map, layerName)
     end
 end
 
+local function newObjectIfNonExistent(item, cls, ...)
+    local args = {...}
+    if not game.world:hasItem(item) or item == nil then
+        return cls:new(...)
+    end
+    return item
+end
+
 local function restartGame()
     winScreen:finish()
     restartScreen:finish()
     enemyManager:clearEnemies()
-
     game.resetWorld()
 
     local tileLayer = getMapLayer(map, "Tiles")
@@ -41,9 +48,12 @@ local function restartGame()
 
             table.insert(tiles, tile)
             game.world:add(tile, tile.x, tile.y, game.tileSize, game.tileSize)
-        elseif tileData == 3 then flag = Flag:new(tileX, tileY)
-        elseif tileData == 4 then player = Player:new(tileX, tileY)
-        elseif tileData == 5 then enemyManager:newEnemy(tileX, tileY) end
+        elseif tileData == 3 then
+            flag = newObjectIfNonExistent(flag, Flag, tileX, tileY)
+        elseif tileData == 4 then
+            player = newObjectIfNonExistent(player, Player, tileX, tileY)
+        elseif tileData == 5 then
+            enemyManager:newEnemy(tileX, tileY) end
     end
 end
 

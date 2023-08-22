@@ -75,7 +75,7 @@ function Enemy:draw()
         -self.direction,
         1,
         game.tileSize/2,
-        game.tileSize * 1/4
+        game.tileSize - h
     )
 end
 
