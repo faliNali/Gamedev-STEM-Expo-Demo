@@ -41,13 +41,10 @@ local function restartGame()
 
             table.insert(tiles, tile)
             game.world:add(tile, tile.x, tile.y, game.tileSize, game.tileSize)
-        elseif tileData == 4 then 
-            flag = Flag:new(tileX, tileY)
-        elseif tileData == 5 then
-        elseif tileData == 6 then player = Player:new(tileX, tileY) end
+        elseif tileData == 3 then flag = Flag:new(tileX, tileY)
+        elseif tileData == 4 then player = Player:new(tileX, tileY)
+        elseif tileData == 5 then enemyManager:newEnemy(tileX, tileY) end
     end
-
-    enemyManager:newEnemy(200, 150)
 end
 
 function love.load()
