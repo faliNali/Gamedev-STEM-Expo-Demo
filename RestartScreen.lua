@@ -41,6 +41,7 @@ end
 
 function RestartScreen:start()
     if self.state == states.clear then self.state = states.covering end
+    game.sounds.blackScreenIn:play()
 end
 
 function RestartScreen:finish()

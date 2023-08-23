@@ -14,12 +14,12 @@ function Player:new(x, y)
 
     p.speed = 150
     
-    p.jumpVelocity = -225
+    p.jumpVelocity = -220
 
     p.touchedFlag = false
     p.justTouchedFlag = false
 
-    p.jumpParticles = ParticleEffect:new(game.sprites.particle, 60, 2, true)
+    p.jumpParticles = ParticleEffect:new(game.sprites.smallParticle, 60, 2, true)
     p.deathParticles = ParticleEffect:new(game.sprites.particle, 200, 2, true)
 
     p.anim = game.anims.player.idle
@@ -36,6 +36,10 @@ function Player:update(dt)
         dt,
         not self.alive and function(item, other) return false end or nil
     )
+
+    if self.anim == game.anims.player.walk then
+        game.sounds.playerWalk:play()
+    end
     
     if self.alive then
         self.anim = game.anims.player.walk
@@ -58,18 +62,18 @@ function Player:update(dt)
         local deadEnemyCols = self:checkBelow('enemy')
         for i, enemyCol in ipairs(deadEnemyCols) do
             enemyCol.other:die()
-            self.velocity.y = self.jumpVelocity
+            self.velocity.y = self.jumpVelocity * 3/4
         end
 
         for i, col in ipairs(cols) do
             if col.other.id == 'water' then self:die()
             elseif col.other.id == 'flag'then
                 self:win()
-                col.other:spawnParticles()
+                col.other:winEffect()
             end
         end
     elseif self.exists then
-        if self.velocity.y < 0 then
+        if self.velocity.y < 100 then
             self.useGravity = true
         else
             self.exists = false
@@ -82,6 +86,8 @@ function Player:update(dt)
             self.deathParticles:spawnParticles(
                 self.position.x + w/2, self.position.y + h/2, 10
             )
+
+            game.sounds.playerExplode:play()
         end
     end
 end
@@ -98,6 +104,8 @@ function Player:keypressed(key)
 
             local x, y, w, h = game.world:getRect(self)
             self.jumpParticles:spawnParticles(x + w/2, y + h, 3)
+
+            game.sounds.playerJump:play()
         end
     end
 end
@@ -128,6 +136,8 @@ function Player:die()
     self.velocity.x = 0
     self.velocity.y = self.jumpVelocity
     game.screenShaker:shake(5, 60)
+
+    game.sounds.playerDefeat:play()
 end
 
 function Player:win()

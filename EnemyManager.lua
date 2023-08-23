@@ -51,6 +51,8 @@ function EnemyManager:killEnemy(index)
 
     game.screenShaker:shake(15, 80)
     self:removeEnemy(index)
+
+    game.sounds.enemyExplode:play()
 end
 
 function EnemyManager:clearEnemies()

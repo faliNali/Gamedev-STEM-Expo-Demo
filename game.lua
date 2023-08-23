@@ -17,6 +17,7 @@ love.graphics.setFont(game.font)
 game.sprites = {
     tiles = love.graphics.newImage("maps/tileset.png"),
     particle = love.graphics.newImage("images/particle.png"),
+    smallParticle = love.graphics.newImage('images/smallParticle.png'),
     player = love.graphics.newImage('images/player.png'),
     enemy = love.graphics.newImage('images/enemy.png'),
     flyingEnemy = love.graphics.newImage('images/flyingEnemy.png'),
@@ -53,6 +54,19 @@ game.tileQuads = {
     ground = love.graphics.newQuad(0, 0, ts, ts, game.sprites.tiles),
     water = love.graphics.newQuad(ts, 0, ts, ts, game.sprites.tiles)
 }
+
+game.sounds = {
+    playerWalk = love.audio.newSource('sounds/playerWalk.wav', 'static'),
+    playerJump = love.audio.newSource('sounds/playerJump.wav', 'static'),
+    playerDefeat = love.audio.newSource('sounds/playerDefeat.wav', 'static'),
+    playerExplode = love.audio.newSource('sounds/playerExplode.wav', 'static'),
+    enemyExplode = love.audio.newSource('sounds/enemyExplode.wav', 'static'),
+    winTheme = love.audio.newSource('sounds/winTheme.wav', 'stream'),
+    winSound = love.audio.newSource('sounds/winSound.wav', 'static'),
+    blackScreenIn = love.audio.newSource('sounds/blackScreenIn.wav', 'static'),
+    blackScreenOut = love.audio.newSource('sounds/blackScreenOut.wav', 'static')
+}
+game.sounds.winTheme:setVolume(0.5)
 
 function game.resetWorld()
     game.world = bump.newWorld(80)
