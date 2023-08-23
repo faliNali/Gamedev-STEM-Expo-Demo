@@ -9,8 +9,9 @@ function Flag:new(x, y)
     setmetatable(f, self)
     self.__index = self
     self.anim = game.anims.flag
+    self.justGotTouched = false
     self.particles = ParticleEffect:new(game.sprites.particle, 120, 1)
-    self.flagParticles = ParticleEffect:new(game.sprites.flagParticle, 5, 1)
+    self.flagParticles = ParticleEffect:new(game.sprites.flagParticle, 5, 2)
 
     self.flagParticleTime = 0.25
     self.flagParticleTimer = self.flagParticleTime
@@ -38,8 +39,11 @@ function Flag:draw()
 end
 
 function Flag:spawnParticles()
-    local x, y, w, h = game.world:getRect(self)
-    self.particles:spawnParticles(10, x + w/2, y + h/2)
+    if not self.justGotTouched then
+        local x, y, w, h = game.world:getRect(self)
+        self.particles:spawnParticles(x + w/2, y + h/2, 10)
+    end
+    self.justGotTouched = true
 end
 
 return Flag
