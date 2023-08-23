@@ -77,7 +77,10 @@ function Object:checkRelativePositionForID(relativeX, relativeY, id, filter)
 end
 
 function Object:checkBelow(id, filter)
-    return self:checkRelativePositionForID(0, 2, id, filter)
+    local gameValues  = require 'interactiveGameValues'
+    local distanceFromFloor = gameValues.playerJump / (gameValues.defaults.playerJump)
+    print(distanceFromFloor)
+    return self:checkRelativePositionForID(0, distanceFromFloor, id, filter)
 end
 
 function Object:checkAbove(id, filter)

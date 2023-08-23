@@ -1,5 +1,4 @@
 local Object = require 'Object'
-local ParticleEffect = require 'ParticleEffect'
 local game = require 'game'
 
 local Player = Object:new()
@@ -12,14 +11,17 @@ function Player:new(x, y)
     p.alive = true
     p.exists = true
 
-    p.speed = 150
+    local gameValues = require 'interactiveGameValues'
+    p.speed = gameValues.playerSpeed or gameValues.defaults.playerSpeed
     
-    p.jumpVelocity = -220
+    p.jumpVelocity = -gameValues.playerJump or -gameValues.defaults.playerJump
+    p.gravity = p.gravity * gameValues.playerJump / gameValues.defaults.playerJump
 
     p.touchedFlag = false
     p.justTouchedFlag = false
 
-    p.jumpParticles = ParticleEffect:new(game.sprites.smallParticle, 60, 2, true)
+    local ParticleEffect = require 'ParticleEffect'
+    p.jumpParticles = ParticleEffect:new(game.sprites.particle, 60, 2, true)
     p.deathParticles = ParticleEffect:new(game.sprites.particle, 200, 2, true)
 
     p.anim = game.anims.player.idle
