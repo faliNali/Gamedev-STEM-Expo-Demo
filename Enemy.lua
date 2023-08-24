@@ -12,7 +12,9 @@ function Enemy:new(x, y)
     self.__index = self
 
     self.direction = 1
-    self.speed = 30
+
+    local gameValues = require 'interactiveGameValues'
+    self.speed = gameValues.enemySpeed
 
     return e
 end

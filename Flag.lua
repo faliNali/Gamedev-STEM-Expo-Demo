@@ -13,8 +13,8 @@ function Flag:new(x, y)
     self.particles = ParticleEffect:new(game.sprites.particle, 120, 2)
     self.flagParticles = ParticleEffect:new(game.sprites.flagParticle, 5, 1.5)
 
-    self.flagParticleTime = 0.35
-    self.flagParticleTimer = self.flagParticleTime
+    self.flagParticleTimerMax = 0.35
+    self.flagParticleTimer = self.flagParticleTimerMax
 
     return f
 end
@@ -26,7 +26,7 @@ function Flag:update(dt)
 
     self.flagParticleTimer = self.flagParticleTimer - dt
     if self.flagParticleTimer <= 0 then
-        self.flagParticleTimer = self.flagParticleTimer + self.flagParticleTime
+        self.flagParticleTimer = self.flagParticleTimer + self.flagParticleTimerMax
         local x, y, w, h = game.world:getRect(self)
         self.flagParticles:spawnParticle(x + w/2, y + h/2)
     end

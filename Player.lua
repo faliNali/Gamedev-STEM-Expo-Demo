@@ -12,16 +12,19 @@ function Player:new(x, y)
     p.exists = true
 
     local gameValues = require 'interactiveGameValues'
-    p.speed = gameValues.playerSpeed or gameValues.defaults.playerSpeed
+    p.speed = gameValues.playerSpeed
+    p.gravity = gameValues.playerGravity
     
-    p.jumpVelocity = -gameValues.playerJump or -gameValues.defaults.playerJump
-    p.gravity = p.gravity * gameValues.playerJump / gameValues.defaults.playerJump
+    p.jumpVelocity = -220
 
     p.touchedFlag = false
     p.justTouchedFlag = false
 
+    p.deathTimerMax = 0.5
+    p.deathTimer = p.deathTimerMax
+
     local ParticleEffect = require 'ParticleEffect'
-    p.jumpParticles = ParticleEffect:new(game.sprites.particle, 60, 2, true)
+    p.jumpParticles = ParticleEffect:new(game.sprites.smallParticle, 60, 2, true)
     p.deathParticles = ParticleEffect:new(game.sprites.particle, 200, 2, true)
 
     p.anim = game.anims.player.idle
@@ -75,7 +78,8 @@ function Player:update(dt)
             end
         end
     elseif self.exists then
-        if self.velocity.y < 100 then
+        if self.deathTimer > 0 then
+            self.deathTimer = self.deathTimer - dt
             self.useGravity = true
         else
             self.exists = false

@@ -112,12 +112,24 @@ end
 
 function love.draw()
     game.screenShaker:translate()
-    love.graphics.scale(2, 2)
+    love.graphics.scale(game.scale.x, game.scale.y)
+
+    love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.draw(
+        game.sprites.background,
+        love.graphics.getWidth()/(game.scale.x*2),
+        love.graphics.getHeight()/(game.scale.x*2),
+        0, 1, 1,
+        game.sprites.background:getWidth()/2,
+        game.sprites.background:getHeight()/2
+    )
+    love.graphics.setColor(1, 1, 1, 1)
+
     for i, tile in ipairs(tiles) do
         local x, y, w, h = game.world:getRect(tile)
         --love.graphics.rectangle('line', x, y, w, h)
         if tile.id == 'ground' then
-            love.graphics.draw(game.sprites.tiles, game.tileQuads.ground, x, y)
+            love.graphics.draw(game.sprites.ground, x, y)
         elseif tile.id == 'water' then
             game.anims.water:draw(game.sprites.water, x, y)
         end

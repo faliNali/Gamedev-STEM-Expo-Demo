@@ -1,7 +1,8 @@
-local map = require 'maps/map'
 local bump = require "lib/bump"
 local anim8 = require 'lib/anim8'
 local ScreenShaker = require 'ScreenShaker'
+
+local map = require 'maps/map'
 
 local game = {}
 
@@ -23,7 +24,9 @@ game.sprites = {
     flyingEnemy = love.graphics.newImage('images/flyingEnemy.png'),
     flag = love.graphics.newImage('images/flag.png'),
     flagParticle = love.graphics.newImage('images/flagParticle.png'),
-    water = love.graphics.newImage('images/water.png')
+    ground = love.graphics.newImage('images/ground.png'),
+    water = love.graphics.newImage('images/water.png'),
+    background = love.graphics.newImage('images/gdcLogo.png')
 }
 
 local s = game.sprites
