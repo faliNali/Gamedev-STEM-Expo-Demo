@@ -4,12 +4,13 @@ Welcome to GameDev club! You will
 be designing a level for a game
 that you can play.
 
-To play your level, press Alt-l
+To play your level, press Alt+l
 and a window will show up.
 
 Down below, you can modify some
 game values to changehow the
 game is played.
+Press Ctrl+s to save your changes
 
 Have fun! :D
 ]]
@@ -23,7 +24,7 @@ to play with default game values
 change to "false" if you want to
 play with your own game values below
 ]]
-local switchToDefaults = true
+local switchToDefaults = false
 
 -- change how quickly the player moves!
 -- measured in pixels per second
@@ -33,12 +34,12 @@ values.playerSpeed = 120
 -- lower gravity allows player to jump higher
 -- higher gravity makes player jump smaller
 -- default gravity is 600
-values.playerGravity = 100
+values.playerGravity = 300
 
 -- change how quickly the enemies move
 -- measured in pixels per second
 -- default speed is 30
-values.enemySpeed = 500
+values.enemySpeed = 90
 
 
 
