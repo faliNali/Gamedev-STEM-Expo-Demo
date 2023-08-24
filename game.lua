@@ -66,8 +66,7 @@ game.sounds = {
     enemyExplode = love.audio.newSource('sounds/enemyExplode.wav', 'static'),
     winTheme = love.audio.newSource('sounds/winTheme.wav', 'stream'),
     winSound = love.audio.newSource('sounds/winSound.wav', 'static'),
-    blackScreenIn = love.audio.newSource('sounds/blackScreenIn.wav', 'static'),
-    blackScreenOut = love.audio.newSource('sounds/blackScreenOut.wav', 'static')
+    blackScreenIn = love.audio.newSource('sounds/blackScreenIn.wav', 'static')
 }
 game.sounds.winTheme:setVolume(0.5)
 
