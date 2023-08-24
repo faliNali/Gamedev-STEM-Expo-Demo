@@ -24,7 +24,7 @@ to play with default game values
 change to "false" if you want to
 play with your own game values below
 ]]
-local switchToDefaults = false
+local switchToDefaults = true
 
 -- change how quickly the player moves!
 -- measured in pixels per second

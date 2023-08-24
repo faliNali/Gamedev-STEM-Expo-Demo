@@ -48,10 +48,10 @@ function Player:update(dt)
     
     if self.alive then
         self.anim = game.anims.player.walk
-        if love.keyboard.isDown('d') then
+        if love.keyboard.isDown('d', 'right') then
             self.velocity.x = self.speed
             self.scale.x = 1
-        elseif love.keyboard.isDown('a') then
+        elseif love.keyboard.isDown('a', 'left') then
             self.velocity.x = -self.speed
             self.scale.x = -1
         else
@@ -105,7 +105,8 @@ end
 
 function Player:keypressed(key)
     if self.alive then
-        if (key=='w' or key=='space') and #self:checkBelow('ground') > 0 then
+        if (key=='w' or key == 'space' or key == 'up')
+        and #self:checkBelow('ground') > 0 then
             self.velocity.y = self.jumpVelocity
 
             local x, y, w, h = game.world:getRect(self)
