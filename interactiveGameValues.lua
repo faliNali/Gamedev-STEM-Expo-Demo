@@ -34,12 +34,12 @@ values.playerSpeed = 120
 -- lower gravity allows player to jump higher
 -- higher gravity makes player jump smaller
 -- default gravity is 600
-values.playerGravity = 300
+values.playerGravity = 600
 
 -- change how quickly the enemies move
 -- measured in pixels per second
 -- default speed is 30
-values.enemySpeed = 90
+values.enemySpeed = 30
 
 
 

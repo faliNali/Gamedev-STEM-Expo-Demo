@@ -22,7 +22,6 @@ local function getMapLayer(map, layerName)
 end
 
 local function newObjectIfNonExistent(item, cls, ...)
-    local args = {...}
     if not game.world:hasItem(item) or item == nil then
         return cls:new(...)
     end
